@@ -3,32 +3,200 @@
     "id": 1,
     "subject": "বাংলা",
     "date": "2026-08-10",
-    "question": "‘সোনার তরী’ কবিতাটি কার লেখা?",
-    "options": ["রবীন্দ্রনাথ ঠাকুর", "কাজী নজরুল ইসলাম", "জীবনানন্দ দাশ", "সুকান্ত ভট্টাচার্য"],
+    "question": "‘অগ্নি’ শব্দের সমার্থক শব্দ কোনটি?",
+    "options": ["অনল", "বারি", "বায়ু", "আকাশ"],
     "answer": 0
   },
   {
     "id": 2,
-    "subject": "ইংরেজি",
+    "subject": "বাংলা",
     "date": "2026-08-10",
-    "question": "What is the synonym of 'Happy'?",
-    "options": ["Sad", "Joyful", "Angry", "Tired"],
+    "question": "‘অমাবস্যার চাঁদ’ বাগধারাটির অর্থ কী?",
+    "options": ["খুব সুন্দর", "অদৃশ্য বা বিরল দর্শন", "কলঙ্কিত", "নতুন"],
     "answer": 1
   },
   {
     "id": 3,
-    "subject": "অংক",
+    "subject": "বাংলা",
     "date": "2026-08-10",
-    "question": "১২ ও ৮-এর গ.সা.গু কত?",
-    "options": ["২", "৪", "৬", "১২"],
-    "answer": 1
+    "question": "কোন বানানটি শুদ্ধ?",
+    "options": ["মুমুর্ষু", "মুমূর্ষূ", "মুমূর্ষু", "মুমর্ষু"],
+    "answer": 2
   },
   {
     "id": 4,
+    "subject": "বাংলা",
+    "date": "2026-08-10",
+    "question": "‘হিমালয়’ শব্দের সঠিক সন্ধি বিচ্ছেদ কোনটি?",
+    "options": ["হি + মালয়", "হিমাল + অয়", "হিমা + লয়", "হিম + আলয়"],
+    "answer": 3
+  },
+  {
+    "id": 5,
+    "subject": "বাংলা",
+    "date": "2026-08-10",
+    "question": "‘আদি’ শব্দের বিপরীত শব্দ কোনটি?",
+    "options": ["মধ্য", "অন্ত", "শেষ", "প্রান্ত"],
+    "answer": 1
+  },
+  {
+    "id": 6,
+    "subject": "বাংলা",
+    "date": "2026-08-10",
+    "question": "‘যিনি সব জানেন’- তাকে এক কথায় কী বলে?",
+    "options": ["সর্বগ", "সর্বদর্শী", "সর্বজ্ঞ", "সর্বশক্তিমান"],
+    "answer": 2
+  },
+  {
+    "id": 7,
+    "subject": "ইংরেজি",
+    "date": "2026-08-10",
+    "question": "Choose the word which best expresses the meaning of 'Obstinate':",
+    "options": ["Stubborn", "Pretty", "Silly", "Clever"],
+    "answer": 0
+  },
+  {
+    "id": 8,
+    "subject": "ইংরেজি",
+    "date": "2026-08-10",
+    "question": "Choose the word which is opposite in meaning to 'Concise':",
+    "options": ["Intended", "Short", "Protracted", "Elongated"],
+    "answer": 2
+  },
+  {
+    "id": 9,
+    "subject": "ইংরেজি",
+    "date": "2026-08-10",
+    "question": "Change the voice: 'The cat killed the mouse.'",
+    "options": ["The mouse has killed by the cat.", "The mouse was killed by the cat.", "The mouse was killed the cat.", "The mouse was been killed by the cat."],
+    "answer": 1
+  },
+  {
+    "id": 10,
+    "subject": "ইংরেজি",
+    "date": "2026-08-10",
+    "question": "What is the meaning of the idiom 'A wild goose chase'?",
+    "options": ["expensive", "full of difficulties", "ill advised", "unprofitable expenditure"],
+    "answer": 3
+  },
+  {
+    "id": 11,
+    "subject": "ইংরেজি",
+    "date": "2026-08-10",
+    "question": "Choose the correctly spelt word:",
+    "options": ["Sanctaries", "Sanctauries", "Santuaries", "Sanctuaries"],
+    "answer": 3
+  },
+  {
+    "id": 12,
+    "subject": "ইংরেজি",
+    "date": "2026-08-10",
+    "question": "One who knows everything is called:",
+    "options": ["Omnipotent", "Omniscient", "Omnipresent", "Omnilogos"],
+    "answer": 1
+  },
+  {
+    "id": 13,
+    "subject": "অংক",
+    "date": "2026-08-10",
+    "question": "P's salary is 25% higher than Q. What percentage is Q's salary lower than that of P?",
+    "options": ["20%", "25%", "31%", "33 1/3%"],
+    "answer": 0
+  },
+  {
+    "id": 14,
+    "subject": "অংক",
+    "date": "2026-08-10",
+    "question": "Ganesh, Ram and Sohan together can complete a work in 16 days. If Ganesh and Ram together can complete the same work in 24 days, the number of days Sohan alone takes to finish the work is:",
+    "options": ["40", "48", "32", "30"],
+    "answer": 1
+  },
+  {
+    "id": 15,
+    "subject": "অংক",
+    "date": "2026-08-10",
+    "question": "If the simple interest on Rs. 400 for 10 years is Rs. 280, then the rate of interest per annum is:",
+    "options": ["7%", "7.5%", "7.25%", "8.5%"],
+    "answer": 0
+  },
+  {
+    "id": 16,
+    "subject": "অংক",
+    "date": "2026-08-10",
+    "question": "Complete the series: 3, 8, 15, _, 35",
+    "options": ["18", "21", "24", "28"],
+    "answer": 2
+  },
+  {
+    "id": 17,
+    "subject": "অংক",
+    "date": "2026-08-10",
+    "question": "If MASON is coded as NBTPO, then WORLD is coded as:",
+    "options": ["XPSME", "PSMEX", "SMEXP", "EXPSM"],
+    "answer": 0
+  },
+  {
+    "id": 18,
+    "subject": "অংক",
+    "date": "2026-08-10",
+    "question": "If A: B = 4: 5 and B: C = 10: 17, then A: C is:",
+    "options": ["4:17", "8:17", "2:17", "9:17"],
+    "answer": 1
+  },
+  {
+    "id": 19,
+    "subject": "অংক",
+    "date": "2026-08-10",
+    "question": "The price of a chair is Rs. 500. It has been sold at two successive discounts of 10% each. What is its selling price?",
+    "options": ["Rs.400", "Rs.405", "Rs.415", "Rs.425"],
+    "answer": 1
+  },
+  {
+    "id": 20,
     "subject": "জিকে",
     "date": "2026-08-10",
-    "question": "ভারতের রাজধানী কী?",
-    "options": ["মুম্বাই", "চেন্নাই", "নয়াদিল্লি", "কলকাতা"],
+    "question": "By which of the following constitutional Amendment Acts did Panchayats get constitutional status?",
+    "options": ["73rd Amendment Act", "74th Amendment Act", "75th Amendment Act", "76th Amendment Act"],
+    "answer": 0
+  },
+  {
+    "id": 21,
+    "subject": "জিকে",
+    "date": "2026-08-10",
+    "question": "Which river is known as the 'Sorrow of Bengal'?",
+    "options": ["Teesta", "Bhagirathi", "Mahananda", "Damodar"],
+    "answer": 3
+  },
+  {
+    "id": 22,
+    "subject": "জিকে",
+    "date": "2026-08-10",
+    "question": "In India, the Repo rate is announced by:",
+    "options": ["the Ministry of Finance", "the Prime Minister of India", "the Reserve Bank of India", "the President of India"],
     "answer": 2
+  },
+  {
+    "id": 23,
+    "subject": "জিকে",
+    "date": "2026-08-10",
+    "question": "BHIM app can be used to:",
+    "options": ["locate monuments", "make cashless payments", "sign digital records", "None of the above"],
+    "answer": 1
+  },
+  {
+    "id": 24,
+    "subject": "জিকে",
+    "date": "2026-08-10",
+    "question": "Who was the first Nobel prize winner in India?",
+    "options": ["C.V. Raman", "Rabindranath Tagore", "Amartya Sen", "None of them"],
+    "answer": 1
+  },
+  {
+    "id": 25,
+    "subject": "জিকে",
+    "date": "2026-08-10",
+    "question": "Give the full form of SHGs.",
+    "options": ["Self House Groups", "Self Healthy Groups", "Self Held Groups", "Self Help Groups"],
+    "answer": 3
   }
 ]
