@@ -11,7 +11,6 @@ let active = false;
 window.addEventListener('load', () => {
     document.getElementById('quizDate').value = new Date().toISOString().split('T')[0];
 
-    // প্যালেট কন্ট্রোল
     document.getElementById('paletteBtn').addEventListener('click', () => {
         document.getElementById('paletteModal').classList.remove('hidden');
     });
@@ -206,6 +205,16 @@ function submitQuiz() {
     document.getElementById('wrongCount').innerText = wrong;
     document.getElementById('skippedCount').innerText = skipped;
     document.getElementById('timeTaken').innerText = time;
+
+    // পাস/ফেল স্ট্যাটাস আপডেট
+    const passMsg = document.getElementById('passMessage');
+    if (percent >= 85) {
+        passMsg.innerHTML = '✅ তুমি পাস করেছো!';
+        passMsg.style.color = '#2D6A4F';
+    } else {
+        passMsg.innerHTML = '❌ তুমি ফ্রেন্ড (ফেল) করেছো। আবার চেষ্টা করো।';
+        passMsg.style.color = '#DC3545';
+    }
 
     const reviewDiv = document.getElementById('reviewSection');
     reviewDiv.innerHTML = '';
