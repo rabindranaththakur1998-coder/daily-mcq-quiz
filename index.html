@@ -4,106 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Panchayat Quiz With Bishal Chatterjee</title>
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Noto Sans Bengali + Hind Siliguri for variety -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="light-mode">
 
-<div class="main-container">
-    <!-- প্রশ্ন প্যালেট -->
-    <aside class="palette" id="palette">
-        <div class="palette-header">
-            <span>প্রশ্ন প্যালেট</span>
-            <button id="closePalette" class="icon-btn"><i class="fas fa-times"></i></button>
+<div class="app-wrapper">
+    <!-- হোম স্ক্রিন -->
+    <div id="homeScreen" class="screen home-screen">
+        <div class="home-header">
+            <div class="logo-badge">
+                <i class="fas fa-landmark"></i>
+            </div>
+            <h1>Daily Panchayat Quiz</h1>
+            <p class="tagline">With Bishal Chatterjee</p>
         </div>
-        <div class="palette-legend">
-            <span><i class="fas fa-circle" style="color:#10b981;"></i> উত্তর দেওয়া</span>
-            <span><i class="fas fa-circle" style="color:#f59e0b;"></i> রিভিউ</span>
-            <span><i class="fas fa-circle" style="color:#ef4444;"></i> উত্তর নেই</span>
+        <div class="date-card">
+            <label for="quizDate"><i class="far fa-calendar-alt"></i> তারিখ বাছাই</label>
+            <input type="date" id="quizDate">
         </div>
-        <div class="palette-grid" id="paletteGrid"></div>
-    </aside>
+        <div class="subject-grid">
+            <button onclick="startQuiz('বাংলা')" class="subject-tile bangla">
+                <i class="fas fa-book-open"></i>
+                <span>বাংলা</span>
+            </button>
+            <button onclick="startQuiz('ইংরেজি')" class="subject-tile english">
+                <i class="fas fa-globe"></i>
+                <span>ইংরেজি</span>
+            </button>
+            <button onclick="startQuiz('অংক')" class="subject-tile math">
+                <i class="fas fa-calculator"></i>
+                <span>অংক</span>
+            </button>
+            <button onclick="startQuiz('জিকে')" class="subject-tile gk">
+                <i class="fas fa-lightbulb"></i>
+                <span>জিকে</span>
+            </button>
+        </div>
+        <button id="darkModeToggle" class="mode-toggle">
+            <i class="fas fa-moon"></i> <span>ডার্ক মোড</span>
+        </button>
+    </div>
 
-    <!-- মূল কন্টেন্ট -->
-    <div class="content-area" id="contentArea">
-        <!-- হোম স্ক্রিন -->
-        <div id="homeScreen" class="screen home-screen">
-            <div class="top-bar">
-                <h1>📘 Daily Panchayat Quiz</h1>
-                <p class="subtitle">With Bishal Chatterjee</p>
-                <button id="darkModeToggle" class="icon-btn float-btn"><i class="fas fa-moon"></i></button>
+    <!-- কুইজ স্ক্রিন -->
+    <div id="quizScreen" class="screen hidden">
+        <div class="quiz-header">
+            <button id="backToHomeBtn" class="icon-btn"><i class="fas fa-arrow-left"></i></button>
+            <div class="timer-circle">
+                <svg viewBox="0 0 36 36" class="timer-svg">
+                    <path class="timer-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path id="timerPath" class="timer-progress" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <span id="timerText" class="timer-text">30</span>
             </div>
-            <div class="home-card-inner">
-                <div class="date-picker-wrapper">
-                    <label><i class="far fa-calendar-alt"></i> তারিখ নির্বাচন</label>
-                    <input type="date" id="quizDate">
-                </div>
-                <div class="subject-grid">
-                    <button onclick="startQuiz('বাংলা')" class="sub-btn bangla"><i class="fas fa-book-open"></i> বাংলা</button>
-                    <button onclick="startQuiz('ইংরেজি')" class="sub-btn english"><i class="fas fa-globe"></i> ইংরেজি</button>
-                    <button onclick="startQuiz('অংক')" class="sub-btn math"><i class="fas fa-calculator"></i> অংক</button>
-                    <button onclick="startQuiz('জিকে')" class="sub-btn gk"><i class="fas fa-lightbulb"></i> জিকে</button>
-                </div>
+            <button id="openPaletteBtn" class="icon-btn"><i class="fas fa-th"></i></button>
+        </div>
+        <div class="quiz-card">
+            <div id="questionCounter" class="counter-pill"></div>
+            <h2 id="questionText" class="question-text"></h2>
+            <div id="optionsContainer" class="options-list"></div>
+            <div class="quiz-actions">
+                <button id="markReviewBtn" class="chip-btn"><i class="fas fa-bookmark"></i> রিভিউ</button>
+                <button id="clearResponseBtn" class="chip-btn"><i class="fas fa-undo-alt"></i> মুছুন</button>
+                <button id="skipBtn" class="chip-btn"><i class="fas fa-forward"></i> স্কিপ</button>
+            </div>
+            <div class="nav-row">
+                <button id="prevBtn" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                <button id="submitBtn" class="submit-btn">সাবমিট <i class="fas fa-check"></i></button>
+                <button id="nextBtn" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
+    </div>
 
-        <!-- কুইজ স্ক্রিন -->
-        <div id="quizScreen" class="screen hidden">
-            <div class="quiz-top-bar">
-                <div class="timer-wrap">
-                    <i class="far fa-clock"></i>
-                    <span id="timerText">00:30</span>
-                    <div class="timer-bar"><div id="timerFill"></div></div>
+    <!-- ফলাফল স্ক্রিন -->
+    <div id="resultScreen" class="screen hidden">
+        <div class="result-card">
+            <div class="score-circle">
+                <svg viewBox="0 0 36 36" class="score-svg">
+                    <path class="score-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path id="scorePath" class="score-fill" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="score-inner">
+                    <span id="scorePercent">0%</span>
+                    <small>স্কোর</small>
                 </div>
-                <button id="openPaletteBtn" class="icon-btn"><i class="fas fa-th-list"></i></button>
             </div>
-            <div class="quiz-body">
-                <div id="questionCounter" class="counter-badge"></div>
-                <div class="question-card">
-                    <h2 id="questionText"></h2>
-                </div>
-                <div id="optionsContainer" class="options-grid"></div>
-                <div class="action-buttons">
-                    <button id="markReviewBtn" class="action-btn review-btn">
-                        <i class="fas fa-bookmark"></i> মার্ক ফর রিভিউ
-                    </button>
-                    <button id="clearResponseBtn" class="action-btn clear-btn">
-                        <i class="fas fa-eraser"></i> ক্লিয়ার
-                    </button>
-                    <button id="skipBtn" class="action-btn skip-btn">
-                        <i class="fas fa-forward"></i> স্কিপ
-                    </button>
-                </div>
-                <div class="nav-buttons">
-                    <button id="prevBtn" class="nav-btn"><i class="fas fa-arrow-left"></i> আগের</button>
-                    <button id="nextBtn" class="nav-btn">পরবর্তী <i class="fas fa-arrow-right"></i></button>
-                </div>
-                <button id="submitBtn" class="submit-btn">
-                    <i class="fas fa-paper-plane"></i> সাবমিট
-                </button>
+            <div class="stats-row">
+                <div class="stat"><span id="correctCount">0</span> ঠিক</div>
+                <div class="stat"><span id="wrongCount">0</span> ভুল</div>
+                <div class="stat"><span id="skippedCount">0</span> স্কিপ</div>
+                <div class="stat">⏱ <span id="timeTaken">0</span>s</div>
             </div>
+            <div id="reviewSection" class="review-list"></div>
+            <button onclick="goHome()" class="home-btn"><i class="fas fa-home"></i> হোম</button>
         </div>
+    </div>
 
-        <!-- ফলাফল স্ক্রিন -->
-        <div id="resultScreen" class="screen hidden">
-            <div class="result-container">
-                <div class="score-hero">
-                    <div class="score-ring">
-                        <span id="scorePercent">0%</span>
-                    </div>
-                    <p class="score-text">তুমি পেয়েছ <span id="scoreObtained">0</span> / <span id="totalQResult"></span></p>
-                </div>
-                <div class="result-stats">
-                    <div class="stat"><span id="correctCount">0</span> ঠিক</div>
-                    <div class="stat"><span id="wrongCount">0</span> ভুল</div>
-                    <div class="stat"><span id="skippedCount">0</span> স্কিপ</div>
-                    <div class="stat">⏱ <span id="timeTaken">0</span> সেকেন্ড</div>
-                </div>
-                <div class="review-list" id="reviewSection"></div>
-                <button onclick="goHome()" class="home-btn"><i class="fas fa-home"></i> হোম</button>
-            </div>
-        </div>
+    <!-- বটম শিট প্যালেট -->
+    <div id="paletteOverlay" class="palette-overlay hidden"></div>
+    <div id="paletteSheet" class="palette-sheet">
+        <div class="sheet-handle"></div>
+        <h4>প্রশ্ন প্যালেট</h4>
+        <div id="paletteGrid" class="palette-grid"></div>
     </div>
 </div>
 
