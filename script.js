@@ -1,166 +1,144 @@
 let questions = [];
-let filteredQuestions = [];
-let currentIndex = 0;
-let userAnswers = {};
-let markedReview = {};
-let timerInterval;
+let filtered = [];
+let currentIdx = 0;
+let userAns = {};
+let marked = {};
+let timer = null;
 let timeLeft = 30;
-let quizStartTime;
-let quizActive = false;
+let quizStart = 0;
+let active = false;
 
 window.addEventListener('load', () => {
-    const dateInput = document.getElementById('quizDate');
-    if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
-
-    // ডার্ক মোড
-    document.getElementById('darkModeToggle')?.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const icon = document.getElementById('darkModeToggle').querySelector('i');
-        if (icon) icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
-    });
-
-    // ব্যাক টু হোম (কুইজ স্ক্রিন থেকে)
-    document.getElementById('backToHomeBtn')?.addEventListener('click', goHome);
+    document.getElementById('quizDate').value = new Date().toISOString().split('T')[0];
 
     // প্যালেট কন্ট্রোল
-    const openPalette = document.getElementById('openPaletteBtn');
-    const overlay = document.getElementById('paletteOverlay');
-    const sheet = document.getElementById('paletteSheet');
-    if (openPalette) {
-        openPalette.addEventListener('click', () => {
-            overlay.classList.remove('hidden');
-            sheet.classList.add('show');
-        });
-    }
-    overlay?.addEventListener('click', () => {
-        overlay.classList.add('hidden');
-        sheet.classList.remove('show');
+    document.getElementById('paletteBtn').addEventListener('click', () => {
+        document.getElementById('paletteModal').classList.remove('hidden');
+    });
+    document.getElementById('closePalette').addEventListener('click', () => {
+        document.getElementById('paletteModal').classList.add('hidden');
     });
 
     loadQuestions();
-    bindQuizControls();
+    bindButtons();
 });
 
-function bindQuizControls() {
-    document.getElementById('prevBtn')?.addEventListener('click', goToPrevious);
-    document.getElementById('nextBtn')?.addEventListener('click', goToNext);
-    document.getElementById('skipBtn')?.addEventListener('click', skipQuestion);
-    document.getElementById('clearResponseBtn')?.addEventListener('click', clearResponse);
-    document.getElementById('markReviewBtn')?.addEventListener('click', markForReview);
-    document.getElementById('submitBtn')?.addEventListener('click', submitQuiz);
+function bindButtons() {
+    document.getElementById('prevBtn').addEventListener('click', prevQ);
+    document.getElementById('nextBtn').addEventListener('click', nextQ);
+    document.getElementById('skipBtn').addEventListener('click', skipQ);
+    document.getElementById('clearBtn').addEventListener('click', clearAns);
+    document.getElementById('markReviewBtn').addEventListener('click', toggleReview);
+    document.getElementById('submitBtn').addEventListener('click', submitQuiz);
 }
 
 async function loadQuestions() {
     try {
         const res = await fetch('questions.json');
-        if (!res.ok) throw new Error('JSON লোড হয়নি');
         questions = await res.json();
-    } catch (err) {
-        console.error(err);
-        questions = [];
+    } catch(e) {
+        alert('questions.json লোড হয়নি!');
     }
 }
 
-function startQuiz(subject) {
-    if (!questions.length) { alert('প্রশ্ন লোড হয়নি।'); return; }
+function startQuiz(subj) {
+    if (!questions.length) { alert('প্রশ্ন নেই'); return; }
     const date = document.getElementById('quizDate').value;
-    if (!date) { alert('তারিখ বাছাই করো।'); return; }
-    filteredQuestions = questions.filter(q => q.subject === subject && q.date === date);
-    if (filteredQuestions.length === 0) { alert('এই বিষয় ও তারিখে কোনো প্রশ্ন নেই।'); return; }
+    if (!date) { alert('তারিখ বাছাই করো'); return; }
+    filtered = questions.filter(q => q.subject === subj && q.date === date);
+    if (!filtered.length) { alert('এই বিষয়/তারিখে কোনো প্রশ্ন নেই'); return; }
 
-    currentIndex = 0;
-    userAnswers = {};
-    markedReview = {};
-    filteredQuestions.forEach((_, i) => { userAnswers[i] = null; markedReview[i] = false; });
-    quizActive = true;
-    quizStartTime = Date.now();
+    currentIdx = 0;
+    userAns = {};
+    marked = {};
+    filtered.forEach((_, i) => { userAns[i] = null; marked[i] = false; });
+    active = true;
+    quizStart = Date.now();
 
     document.getElementById('homeScreen').classList.add('hidden');
     document.getElementById('quizScreen').classList.remove('hidden');
     document.getElementById('resultScreen').classList.add('hidden');
     renderPalette();
-    loadQuestion();
+    showQuestion();
 }
 
-function loadQuestion() {
-    if (!quizActive || currentIndex >= filteredQuestions.length) return;
+function showQuestion() {
+    if (!active) return;
     resetTimer();
-    const q = filteredQuestions[currentIndex];
-    document.getElementById('questionCounter').innerText = `প্রশ্ন ${currentIndex + 1} / ${filteredQuestions.length}`;
+    const q = filtered[currentIdx];
+    document.getElementById('questionCounter').innerText = `প্রশ্ন ${currentIdx+1}/${filtered.length}`;
     document.getElementById('questionText').innerText = q.question;
-    const optDiv = document.getElementById('optionsContainer');
-    optDiv.innerHTML = '';
+    const optsDiv = document.getElementById('optionsContainer');
+    optsDiv.innerHTML = '';
     q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
         btn.innerText = opt;
         btn.onclick = () => selectOption(idx);
-        if (userAnswers[currentIndex] === idx) btn.classList.add('selected');
-        optDiv.appendChild(btn);
+        if (userAns[currentIdx] === idx) btn.classList.add('selected');
+        optsDiv.appendChild(btn);
     });
-    updateReviewButton();
+    updateReviewBtn();
     startTimer();
 }
 
-function selectOption(index) {
-    if (!quizActive) return;
-    userAnswers[currentIndex] = index;
-    markedReview[currentIndex] = false;
-    loadQuestion();
+function selectOption(idx) {
+    if (!active) return;
+    userAns[currentIdx] = idx;
+    marked[currentIdx] = false;
+    showQuestion();
     renderPalette();
 }
 
-function skipQuestion() {
-    if (!quizActive) return;
-    if (userAnswers[currentIndex] === null) userAnswers[currentIndex] = "skipped";
+function skipQ() {
+    if (!active) return;
+    if (userAns[currentIdx] === null) userAns[currentIdx] = "skipped";
     renderPalette();
-    currentIndex < filteredQuestions.length - 1 ? (currentIndex++, loadQuestion()) : submitQuiz();
+    if (currentIdx < filtered.length-1) { currentIdx++; showQuestion(); }
+    else submitQuiz();
 }
 
-function clearResponse() {
-    if (!quizActive) return;
-    userAnswers[currentIndex] = null;
-    loadQuestion();
-    renderPalette();
-}
-
-function markForReview() {
-    if (!quizActive) return;
-    markedReview[currentIndex] = !markedReview[currentIndex];
-    updateReviewButton();
+function clearAns() {
+    if (!active) return;
+    userAns[currentIdx] = null;
+    showQuestion();
     renderPalette();
 }
 
-function updateReviewButton() {
+function toggleReview() {
+    if (!active) return;
+    marked[currentIdx] = !marked[currentIdx];
+    updateReviewBtn();
+    renderPalette();
+}
+
+function updateReviewBtn() {
     const btn = document.getElementById('markReviewBtn');
-    if (!btn) return;
-    if (markedReview[currentIndex]) {
-        btn.innerHTML = '<i class="fas fa-bookmark"></i> রিভিউ';
-        btn.classList.add('active-review');
+    if (marked[currentIdx]) {
+        btn.style.background = '#FFC107';
+        btn.style.color = 'white';
     } else {
-        btn.innerHTML = '<i class="fas fa-bookmark"></i> রিভিউ';
-        btn.classList.remove('active-review');
+        btn.style.background = 'white';
+        btn.style.color = '#2D6A4F';
     }
 }
 
 function renderPalette() {
     const grid = document.getElementById('paletteGrid');
-    if (!grid) return;
     grid.innerHTML = '';
-    filteredQuestions.forEach((_, i) => {
+    filtered.forEach((_, i) => {
         const btn = document.createElement('button');
         btn.className = 'palette-btn';
-        btn.innerText = i + 1;
-        if (userAnswers[i] !== null && userAnswers[i] !== "skipped") btn.classList.add('answered');
-        else if (markedReview[i]) btn.classList.add('review');
-        else if (userAnswers[i] === null) btn.classList.add('not-answered');
-        if (i === currentIndex) btn.classList.add('current');
+        btn.innerText = i+1;
+        if (userAns[i] !== null && userAns[i] !== "skipped") btn.classList.add('answered');
+        else if (marked[i]) btn.classList.add('review');
+        else if (userAns[i] === null) btn.classList.add('not-answered');
+        if (i === currentIdx) btn.classList.add('current');
         btn.onclick = () => {
-            currentIndex = i;
-            loadQuestion();
+            currentIdx = i;
+            showQuestion();
             renderPalette();
-            document.getElementById('paletteSheet').classList.remove('show');
-            document.getElementById('paletteOverlay').classList.add('hidden');
+            document.getElementById('paletteModal').classList.add('hidden');
         };
         grid.appendChild(btn);
     });
@@ -169,80 +147,70 @@ function renderPalette() {
 function startTimer() {
     timeLeft = 30;
     updateTimerUI();
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
+    clearInterval(timer);
+    timer = setInterval(() => {
         timeLeft--;
         updateTimerUI();
         if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            if (quizActive) {
-                if (userAnswers[currentIndex] === null) userAnswers[currentIndex] = "skipped";
-                if (currentIndex < filteredQuestions.length - 1) {
-                    currentIndex++;
-                    loadQuestion();
-                    renderPalette();
-                } else submitQuiz();
+            clearInterval(timer);
+            if (active) {
+                if (userAns[currentIdx] === null) userAns[currentIdx] = "skipped";
+                if (currentIdx < filtered.length-1) { currentIdx++; showQuestion(); renderPalette(); }
+                else submitQuiz();
             }
         }
     }, 1000);
 }
 
 function updateTimerUI() {
-    const text = document.getElementById('timerText');
-    const path = document.getElementById('timerPath');
-    if (text) text.innerText = timeLeft;
-    if (path) {
-        const offset = 100 - (timeLeft / 30) * 100;
-        path.style.strokeDasharray = '100';
-        path.style.strokeDashoffset = offset;
-    }
+    document.getElementById('timerText').innerText = `00:${timeLeft < 10 ? '0'+timeLeft : timeLeft}`;
+    document.getElementById('timerFill').style.width = (timeLeft/30)*100 + '%';
 }
 
-function resetTimer() { clearInterval(timerInterval); }
+function resetTimer() { clearInterval(timer); }
 
-function goToPrevious() {
-    if (!quizActive || currentIndex <= 0) return;
-    currentIndex--; loadQuestion(); renderPalette();
+function prevQ() {
+    if (!active || currentIdx <= 0) return;
+    currentIdx--;
+    showQuestion();
+    renderPalette();
 }
-
-function goToNext() {
-    if (!quizActive || currentIndex >= filteredQuestions.length - 1) return;
-    currentIndex++; loadQuestion(); renderPalette();
+function nextQ() {
+    if (!active || currentIdx >= filtered.length-1) return;
+    currentIdx++;
+    showQuestion();
+    renderPalette();
 }
 
 function submitQuiz() {
-    if (!quizActive) return;
-    quizActive = false;
-    clearInterval(timerInterval);
+    if (!active) return;
+    active = false;
+    clearInterval(timer);
     let correct = 0, wrong = 0, skipped = 0;
-    filteredQuestions.forEach((q, i) => {
-        const ans = userAnswers[i];
+    filtered.forEach((q, i) => {
+        const ans = userAns[i];
         if (ans === null || ans === "skipped") skipped++;
         else if (ans === q.answer) correct++;
         else wrong++;
     });
-    const total = filteredQuestions.length;
-    const percent = Math.round((correct / total) * 100);
-    const timeTaken = Math.round((Date.now() - quizStartTime) / 1000);
+    const total = filtered.length;
+    const percent = Math.round((correct/total)*100);
+    const time = Math.round((Date.now()-quizStart)/1000);
 
     document.getElementById('quizScreen').classList.add('hidden');
     document.getElementById('resultScreen').classList.remove('hidden');
-
     document.getElementById('scorePercent').innerText = percent + '%';
+    document.getElementById('scoreObtained').innerText = correct;
+    document.getElementById('totalQ').innerText = total;
     document.getElementById('correctCount').innerText = correct;
     document.getElementById('wrongCount').innerText = wrong;
     document.getElementById('skippedCount').innerText = skipped;
-    document.getElementById('timeTaken').innerText = timeTaken;
-
-    // অ্যানিমেটেড স্কোর রিং
-    const scorePath = document.getElementById('scorePath');
-    scorePath.style.strokeDasharray = '100';
-    scorePath.style.strokeDashoffset = 100 - percent;
+    document.getElementById('timeTaken').innerText = time;
 
     const reviewDiv = document.getElementById('reviewSection');
     reviewDiv.innerHTML = '';
-    filteredQuestions.forEach((q, i) => {
-        const ans = userAnswers[i];
+    filtered.forEach((q, i) => {
+        const ans = userAns[i];
         let status = '';
         if (ans === null || ans === "skipped") status = '⏭ স্কিপ';
         else if (ans === q.answer) status = '✅ ঠিক';
@@ -255,8 +223,8 @@ function submitQuiz() {
 }
 
 function goHome() {
-    quizActive = false;
-    clearInterval(timerInterval);
+    active = false;
+    clearInterval(timer);
     document.getElementById('quizScreen').classList.add('hidden');
     document.getElementById('resultScreen').classList.add('hidden');
     document.getElementById('homeScreen').classList.remove('hidden');
