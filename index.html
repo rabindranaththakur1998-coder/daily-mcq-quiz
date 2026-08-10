@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দৈনিক MCQ কুইজ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="homeScreen">
+        <h1>📘 দৈনিক MCQ কুইজ</h1>
+        <div class="subject-buttons">
+            <button onclick="startQuiz('বাংলা')">বাংলা</button>
+            <button onclick="startQuiz('ইংরেজি')">ইংরেজি</button>
+            <button onclick="startQuiz('অংক')">অংক</button>
+            <button onclick="startQuiz('জিকে')">জিকে</button>
+        </div>
+        <div class="date-input">
+            <label for="quizDate">তারিখ নির্বাচন করো (YYYY-MM-DD):</label>
+            <input type="date" id="quizDate">
+        </div>
+        <p class="note">আজকের তারিখ অটোমেটিক দেখাবে, চাইলে বদলাতে পারো।</p>
+    </div>
+
+    <div class="container hidden" id="quizScreen">
+        <div id="timerBar"><div id="timerFill"></div></div>
+        <div id="questionCounter"></div>
+        <h2 id="questionText"></h2>
+        <div id="optionsContainer"></div>
+        <button id="nextBtn" class="hidden" onclick="nextQuestion()">পরবর্তী প্রশ্ন ➡️</button>
+    </div>
+
+    <div class="container hidden" id="resultScreen">
+        <h2>✅ ফলাফল</h2>
+        <p>তোমার নম্বর: <span id="score"></span></p>
+        <p>মোট প্রশ্ন: <span id="totalQ"></span></p>
+        <div id="reviewSection"></div>
+        <button onclick="goHome()">🏠 হোমে ফিরে যাও</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

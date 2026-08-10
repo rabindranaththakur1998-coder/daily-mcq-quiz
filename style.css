@@ -1,0 +1,98 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f0f4f8;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.container {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.hidden { display: none; }
+h1 { color: #1e3a5f; }
+.subject-buttons button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 14px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.subject-buttons button:hover { background: #1d4ed8; }
+.date-input { margin-top: 25px; }
+input[type="date"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
+.note { font-size: 13px; color: #555; }
+
+#timerBar {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+#timerFill {
+    height: 100%;
+    width: 100%;
+    background: #10b981;
+    border-radius: 4px;
+    transition: width 1s linear;
+}
+#questionCounter { font-size: 14px; color: #666; margin-bottom: 5px; }
+#questionText { font-size: 20px; margin: 15px 0; color: #111827; }
+.option-btn {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #d1d5db;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: left;
+}
+.option-btn:hover { background: #f3f4f6; }
+.option-btn.selected { border-color: #2563eb; background: #eff6ff; }
+.option-btn.correct { border-color: #10b981; background: #d1fae5; color: #065f46; }
+.option-btn.wrong { border-color: #ef4444; background: #fee2e2; color: #991b1b; }
+
+#nextBtn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    font-size: 16px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+#resultScreen p { font-size: 18px; }
+#reviewSection { text-align: left; margin: 20px 0; }
+.review-item {
+    background: #f9fafb;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #2563eb;
+}
