@@ -54,6 +54,27 @@ h1 {
     font-weight: 600;
     margin-bottom: 25px;
 }
+.name-box {
+    background: #F4F1EA;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+.name-box label {
+    font-weight: 600;
+    color: #2D6A4F;
+    display: block;
+    margin-bottom: 5px;
+}
+.name-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #D8D5CC;
+    border-radius: 8px;
+    font-family: inherit;
+    background: white;
+}
 .date-box {
     background: #F4F1EA;
     border-radius: 12px;
@@ -79,6 +100,7 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    margin-bottom: 20px;
 }
 .sub-btn {
     padding: 15px;
@@ -100,6 +122,24 @@ h1 {
 .math { background: #52B788; color: #1B4332; }
 .gk { background: #95D5B2; color: #1B4332; }
 .sub-btn:hover { opacity: 0.9; transform: scale(1.02); }
+
+.leaderboard-btn {
+    width: 100%;
+    padding: 14px;
+    background: #FFC107;
+    color: #1B4332;
+    border: none;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 16px;
+    transition: 0.2s;
+}
+.leaderboard-btn:hover { background: #FFB300; }
 
 /* Quiz */
 .quiz-header {
@@ -318,10 +358,14 @@ h1 {
     font-weight: 600;
     color: #2D6A4F;
     cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
 }
 .home-btn:hover { background: #D8D5CC; }
+/* Result screen-এর লিডারবোর্ড বাটন already আছে */
 
-/* Modal (Palette) */
+/* Modal */
 .modal {
     position: fixed;
     top: 0; left: 0;
@@ -339,6 +383,8 @@ h1 {
     padding: 20px;
     width: 90%;
     max-width: 350px;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 .modal-header {
     display: flex;
@@ -364,3 +410,38 @@ h1 {
 .palette-btn.review { background: #FFC107; color: white; border-color: #FFC107; }
 .palette-btn.not-answered { background: #DC3545; color: white; border-color: #DC3545; }
 .palette-btn.current { box-shadow: 0 0 0 3px #2D6A4F; }
+
+/* Leaderboard List */
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #F4F1EA;
+    border-radius: 10px;
+    padding: 10px 15px;
+    font-weight: 600;
+}
+.leaderboard-item .rank {
+    background: #FFC107;
+    color: #1B4332;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+.leaderboard-item .name {
+    flex: 1;
+    margin-left: 10px;
+    text-align: left;
+}
+.leaderboard-item .score {
+    color: #2D6A4F;
+}
