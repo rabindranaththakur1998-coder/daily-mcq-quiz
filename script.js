@@ -7,15 +7,23 @@ let timer = null;
 let timeLeft = 30;
 let quizStart = 0;
 let active = false;
+let currentUserName = '';
 
 window.addEventListener('load', () => {
     document.getElementById('quizDate').value = new Date().toISOString().split('T')[0];
 
+    // প্যালেট কন্ট্রোল
     document.getElementById('paletteBtn').addEventListener('click', () => {
         document.getElementById('paletteModal').classList.remove('hidden');
     });
     document.getElementById('closePalette').addEventListener('click', () => {
         document.getElementById('paletteModal').classList.add('hidden');
+    });
+
+    // লিডারবোর্ড কন্ট্রোল
+    document.getElementById('leaderboardBtn').addEventListener('click', showLeaderboard);
+    document.getElementById('closeLeaderboard').addEventListener('click', () => {
+        document.getElementById('leaderboardModal').classList.add('hidden');
     });
 
     loadQuestions();
@@ -36,16 +44,24 @@ async function loadQuestions() {
         const res = await fetch('questions.json');
         questions = await res.json();
     } catch(e) {
-        alert('questions.json লোড হয়নি!');
+        alert('questions.json লোড হয়নি!');
     }
 }
 
 function startQuiz(subj) {
+    // নাম চেক
+    const name = document.getElementById('userName').value.trim();
+    if (!name) {
+        alert('আগে তোমার নাম লেখো!');
+        return;
+    }
+    currentUserName = name;
+
     if (!questions.length) { alert('প্রশ্ন নেই'); return; }
     const date = document.getElementById('quizDate').value;
     if (!date) { alert('তারিখ বাছাই করো'); return; }
     filtered = questions.filter(q => q.subject === subj && q.date === date);
-    if (!filtered.length) { alert('এই বিষয়/তারিখে কোনো প্রশ্ন নেই'); return; }
+    if (!filtered.length) { alert('এই বিষয়/তারিখে কোনো প্রশ্ন নেই'); return; }
 
     currentIdx = 0;
     userAns = {};
@@ -206,7 +222,7 @@ function submitQuiz() {
     document.getElementById('skippedCount').innerText = skipped;
     document.getElementById('timeTaken').innerText = time;
 
-    // পাস/ফেল স্ট্যাটাস আপডেট
+    // পাস/ফেল
     const passMsg = document.getElementById('passMessage');
     if (percent >= 85) {
         passMsg.innerHTML = '✅ তুমি পাস করেছো!';
@@ -229,6 +245,59 @@ function submitQuiz() {
         div.innerHTML = `<strong>${i+1}. ${q.question}</strong><br>${status} | সঠিক: ${q.options[q.answer]}`;
         reviewDiv.appendChild(div);
     });
+
+    // ফলাফল সেভ করো
+    saveResult(currentUserName, document.getElementById('quizDate').value, filtered[0].subject, correct, total, percent, time);
+}
+
+// ========== LOCALSTORAGE LEADERBOARD ==========
+function saveResult(name, date, subject, correct, total, percent, time) {
+    let results = JSON.parse(localStorage.getItem('quizResults')) || [];
+    results.push({
+        name: name,
+        date: date,
+        subject: subject,
+        score: correct,
+        total: total,
+        percent: percent,
+        time: time,
+        timestamp: Date.now()
+    });
+    // Sort by percent desc, then score desc
+    results.sort((a,b) => b.percent - a.percent || b.score - a.score);
+    localStorage.setItem('quizResults', JSON.stringify(results));
+}
+
+function showLeaderboard() {
+    const modal = document.getElementById('leaderboardModal');
+    modal.classList.remove('hidden');
+    const list = document.getElementById('leaderboardList');
+    list.innerHTML = '';
+
+    let results = JSON.parse(localStorage.getItem('quizResults')) || [];
+    if (results.length === 0) {
+        list.innerHTML = '<p style="text-align:center; color:#636e72;">এখনো কেউ পরীক্ষা দেয়নি।</p>';
+        return;
+    }
+
+    // Top 30
+    const top30 = results.slice(0, 30);
+    top30.forEach((r, i) => {
+        const div = document.createElement('div');
+        div.className = 'leaderboard-item';
+        div.innerHTML = `
+            <span class="rank">${i+1}</span>
+            <span class="name">${escapeHtml(r.name)} <small>(${r.percent}%)</small></span>
+            <span class="score">${r.score}/${r.total}</span>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 function goHome() {
@@ -236,5 +305,6 @@ function goHome() {
     clearInterval(timer);
     document.getElementById('quizScreen').classList.add('hidden');
     document.getElementById('resultScreen').classList.add('hidden');
+    document.getElementById('leaderboardModal').classList.add('hidden');
     document.getElementById('homeScreen').classList.remove('hidden');
 }
