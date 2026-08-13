@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Quiz With Bishal Chatterjee</title>
+    <title>Daily Panchayat Quiz With Bishal Chatterjee</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -19,10 +19,18 @@
             </div>
             <h1>Daily Panchayat Quiz</h1>
             <p class="subtitle">With Bishal Chatterjee</p>
+
+            <!-- নাম ইনপুট -->
+            <div class="name-box">
+                <label for="userName"><i class="fas fa-user"></i> তোমার নাম</label>
+                <input type="text" id="userName" placeholder="নাম লিখো..." required>
+            </div>
+
             <div class="date-box">
                 <label for="quizDate"><i class="far fa-calendar-alt"></i> তারিখ</label>
                 <input type="date" id="quizDate">
             </div>
+
             <div class="subject-buttons">
                 <button class="sub-btn bangla" onclick="startQuiz('বাংলা')">
                     <i class="fas fa-book-open"></i> বাংলা
@@ -37,6 +45,11 @@
                     <i class="fas fa-lightbulb"></i> জিকে
                 </button>
             </div>
+
+            <!-- লিডারবোর্ড বাটন -->
+            <button class="leaderboard-btn" id="leaderboardBtn">
+                <i class="fas fa-trophy"></i> লিডারবোর্ড
+            </button>
         </div>
     </div>
 
@@ -57,7 +70,7 @@
             <div id="optionsContainer" class="options-grid"></div>
             <div class="actions">
                 <button id="markReviewBtn" class="act-btn"><i class="fas fa-bookmark"></i> রিভিউ</button>
-                <button id="clearBtn" class="act-btn"><i class="fas fa-eraser"></i> ক্লিয়ার</button>
+                <button id="clearBtn" class="act-btn"><i class="fas fa-eraser"></i> ক্লিয়ার</button>
                 <button id="skipBtn" class="act-btn"><i class="fas fa-forward"></i> স্কিপ</button>
             </div>
             <div class="nav-row">
@@ -74,8 +87,8 @@
             <div class="score-circle">
                 <span id="scorePercent">0%</span>
             </div>
-            <p class="score-summary">তুমি পেয়েছ <span id="scoreObtained">0</span> / <span id="totalQ"></span></p>
-            <!-- নতুন পাস/ফেল মেসেজ -->
+            <p class="score-summary">তুমি পেয়েছ <span id="scoreObtained">0</span> / <span id="totalQ"></span></p>
+            <!-- পাস/ফেল মেসেজ -->
             <p id="passMessage" style="font-size: 20px; font-weight: bold; margin: 15px 0;"></p>
             <div class="stats">
                 <div><span id="correctCount">0</span> ঠিক</div>
@@ -85,6 +98,7 @@
             </div>
             <div id="reviewSection" class="review-list"></div>
             <button class="home-btn" onclick="goHome()"><i class="fas fa-home"></i> হোম</button>
+            <button class="leaderboard-btn" onclick="showLeaderboard()"><i class="fas fa-trophy"></i> লিডারবোর্ড দেখো</button>
         </div>
     </div>
 
@@ -96,6 +110,17 @@
                 <button class="icon-btn" id="closePalette"><i class="fas fa-times"></i></button>
             </div>
             <div id="paletteGrid" class="palette-grid"></div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboardModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-trophy"></i> লিডারবোর্ড (Top 30)</h3>
+                <button class="icon-btn" id="closeLeaderboard"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="leaderboardList" class="leaderboard-list"></div>
         </div>
     </div>
 </div>
